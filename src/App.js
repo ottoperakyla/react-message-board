@@ -22,10 +22,17 @@ const user = {
   email     : 'seppo.taalasmaa@jippii.fi'
 };
 
+const username = <p>{user.firstName} <b>{user.lastName}</b></p>
+
 database.user.add(user);
 console.log(database.getData());
 
 const element = getGreeting(user);
+
+function doLogin(e) {
+  e.preventDefault();
+  console.log('login', e);
+}
 
 class App extends Component {
   render() {
@@ -40,7 +47,7 @@ class App extends Component {
           <form className="login-form">
             <input placeholder="email" type="email" name="username" />
             <input placeholder="password" type="password" name="password" />
-            <input type="submit" value="Login" />
+            <input type="submit" value="Login" onClick={doLogin} />
           </form>
           <p>No account? <a href="#register">register here</a>.</p>
         </div>
@@ -48,24 +55,5 @@ class App extends Component {
     );
   }
 }
-
-/*
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-          {element}
-        </p>
-      </div>
-    );
-  }
-}
-*/
 
 export default App;
