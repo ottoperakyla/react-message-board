@@ -8,7 +8,8 @@ class RegisterForm extends React.Component {
 		this.state = {
 			email: '',
 			password: '',
-			passwordAgain: ''
+			passwordAgain: '',
+			errors: []
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -36,19 +37,16 @@ class RegisterForm extends React.Component {
 			errors.push('User ' + this.state.email + ' already exists');
 		}
 
-		return errors;
+		this.setState({errors: errors});
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
 
 		console.log(JSON.stringify(this.state));
-		var validationErrors = this.validate(this.state);
+		this.validate(this.state);
 
-		if (validationErrors.length) {
-			alert(JSON.stringify(validationErrors))
-		}
-		else {
+		if (!this.state.errors.length) {
 			// do register
 			database.user.add(this.state);
 			alert('Success! Registered user');
@@ -57,13 +55,18 @@ class RegisterForm extends React.Component {
 				password: '',
 				passwordAgain: ''
 			});
-		}
+		};
 
 	}
 
 	render(){
+		let className = 'RegisterForm ';
+		className += this.state.valid ? 'valid' : 'invalid';
 		return (
-			<form className="RegisterForm" onSubmit={this.handleSubmit}>
+			<form className={className} onSubmit={this.handleSubmit}>
+				{this.state.errors.map((error) => 
+					<p>{error}</p>
+				)}
 				<label>Email
 					<input type="email" value={this.state.email} name="email" onChange={this.handleChange} />
 				</label>
