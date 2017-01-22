@@ -14,7 +14,7 @@ var database = {
 		exists: function(userName) {
 			var users = getData();
 
-			return users.hasOwnProperty(userName);
+			return users ? users.hasOwnProperty(userName) : false;
 		}
 	},
 	topic : {

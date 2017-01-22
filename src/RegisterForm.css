@@ -1,3 +1,7 @@
 .RegisterForm input {
 	display: block;
 }
+
+.RegisterForm p.error {
+	color: red;
+}

@@ -26,27 +26,28 @@ class RegisterForm extends React.Component {
 		var errors = [];
 
 		if (this.state.password.length < 6) {
-			errors.push('Password must be atleast 6 characters long');
+			errors.push({id: 1, text: 'Password must be atleast 6 characters long'});
 		}
 
 		if (this.state.password !== this.state.passwordAgain) {
-			errors.push('Password do not match');
+			errors.push({id: 2, text: 'Password do not match'});
 		}
 
 		if (database.user.exists(this.state.email)) {
-			errors.push('User ' + this.state.email + ' already exists');
+			errors.push({id: 3, text: 'User ' + this.state.email + ' already exists'});
 		}
 
 		this.setState({errors: errors});
+		return errors;
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
 
 		console.log(JSON.stringify(this.state));
-		this.validate(this.state);
+		var errors = this.validate(this.state);
 
-		if (!this.state.errors.length) {
+		if (errors.length === 0) {
 			// do register
 			database.user.add(this.state);
 			alert('Success! Registered user');
@@ -60,12 +61,10 @@ class RegisterForm extends React.Component {
 	}
 
 	render(){
-		let className = 'RegisterForm ';
-		className += this.state.valid ? 'valid' : 'invalid';
 		return (
-			<form className={className} onSubmit={this.handleSubmit}>
+			<form className="RegisterForm" onSubmit={this.handleSubmit}>
 				{this.state.errors.map((error) => 
-					<p>{error}</p>
+					<p key={error.id} className="error">{error.text}</p>
 				)}
 				<label>Email
 					<input type="email" value={this.state.email} name="email" onChange={this.handleChange} />
